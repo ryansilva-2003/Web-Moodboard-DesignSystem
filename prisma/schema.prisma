@@ -1,17 +1,16 @@
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "sqlite"
-  url      = "file:./dev.db"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-  id        Int     @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   name      String
-  email     String  @unique
+  email     String   @unique
   password  String
   boards    Board[]
   createdAt DateTime @default(now())
@@ -22,8 +21,16 @@ model Board {
   title       String
   description String?
   colors      String?
-  images      String?
+  images      Image[]
   userId      Int
-  user        User      @relation(fields: [userId], references: [id])
-  createdAt   DateTime  @default(now())
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+}
+
+model Image {
+  id        Int      @id @default(autoincrement())
+  url       String
+  boardId   Int
+  board     Board    @relation(fields: [boardId], references: [id])
+  createdAt DateTime @default(now())
 }
