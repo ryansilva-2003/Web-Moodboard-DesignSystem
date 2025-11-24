@@ -7,17 +7,24 @@ app.use(cors());
 app.use(express.json());
 
 //rota user
-const userRoutes = require("./routers/userRoute");
+const userRoutes = require("./routes/userRoute");
 app.use(userRoutes);
 //rota board
-const boardRoutes = require("./routers/boardRoute");
+const boardRoutes = require("./routes/boardRoute");
 app.use(boardRoutes);
 //rota image
-const imageRoutes = require("./routers/imageRoute");
+const imageRoutes = require("./routes/imageRoute");
 app.use(imageRoutes);
+//rota auth
+const authRoutes = require("./routes/authRoute");
+app.use("/auth", authRoutes);
+//rota protected
+const protectedRoutes = require("./routes/protectedRoute");
+app.use("/protected", protectedRoutes);
+
 
 app.get("/", (req, res) => {
-  res.json({ message: "Backend Moodboard rodando!" });
+  return res.json({ message: "Backend Moodboard rodando!" });
 });
 
 const PORT = process.env.PORT || 3000;

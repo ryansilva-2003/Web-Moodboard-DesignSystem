@@ -1,4 +1,4 @@
-const imageService = require("../Service/imageService");
+const imageService = require("../Services/imageService");
 
 class imageController{
 
@@ -6,10 +6,10 @@ class imageController{
     async buscarTodos (req, res){
         try{
             const images = await imageService.buscarTodos();
-            res.json(images);
+            return res.json(images);
 
         }catch(error){
-            res.status(500).json({ error: "Erro ao buscar imagens..."});
+            return res.status(500).json({ error: "Erro ao buscar imagens..."});
         }
     }
 
@@ -18,10 +18,10 @@ class imageController{
         try{
             const id = parseInt(req.params.id);
             const image = await imageService.buscarId(id);
-            res.json(image);
+            return res.json(image);
             
         }catch(error){
-            res.status(404).json({ error: "Imagem não encontrada..."});
+            return res.status(404).json({ error: "Imagem não encontrada..."});
         }
     }
 
@@ -30,10 +30,10 @@ class imageController{
         try{
             const boardId = parseInt(req.params.boardId);
             const images = await imageService.buscarPorBoard(boardId);
-            res.json(images);
+            return res.json(images);
 
         }catch(error) {
-            res.status(500).json({ error: "Erro ao buscar imagens do board..."})
+            return res.status(500).json({ error: "Erro ao buscar imagens do board..."})
         }
     }
 
@@ -44,10 +44,10 @@ class imageController{
             if (!url || !boardId) return res.status(400).json({ error: "url e boardId são obrigatórios"});
 
             const novaImage = await imageService.criar({ url, boardId});
-            res.status(200).json(novaImage);
+            return res.status(200).json(novaImage);
 
         }catch (error) {
-            res.status(500).json({ error: "Erro ao criar imagem..."});
+            return res.status(500).json({ error: "Erro ao criar imagem..."});
         }
     }
 
@@ -57,10 +57,10 @@ class imageController{
             const id = parseInt(req.params.id);
             const dados = req.body;
             const atualizado = await imageService.atualizar(id, dados);
-            res.json(atualizado);
+            return res.json(atualizado);
 
         }catch (error) {
-            res.status(400).json({ error: "imagem não encontrada"});
+            return res.status(400).json({ error: "imagem não encontrada"});
         }
     }
 
@@ -70,10 +70,10 @@ class imageController{
             const id = parseInt(req.params.id);
 
             await imageService.deletar(id);
-            res.json({ message: "Imagem foi deletada com sucesso."});
+            return res.json({ message: "Imagem foi deletada com sucesso."});
 
         }catch (error){
-            res.json(404).json({ error: "imagem não foi encontrada..."});
+            return res.json(404).json({ error: "imagem não foi encontrada..."});
         }
     }
 }

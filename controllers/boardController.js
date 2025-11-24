@@ -1,4 +1,4 @@
-const boardService = require("../Service/boardService");
+const boardService = require("../Services/boardService");
 
 class boardController {
 
@@ -6,10 +6,10 @@ class boardController {
     async buscarTodos (req, res){
         try{
             const boards = await boardService.buscarTodos();
-            res.json(boards);
+            return res.json(boards);
 
         }catch(error){
-            res.status(500).json({error: "Erro ao buscar boards..."});
+            return res.status(500).json({error: "Erro ao buscar boards..."});
         }
     }
 
@@ -19,10 +19,10 @@ class boardController {
             const id = parseInt(req.params.id);
 
             const board = await boardService.buscarId(id);
-            res.json(board);
+            return res.json(board);
 
         }catch(error){
-            res.status(404).json({error: "Board não encontrado..."});
+            return res.status(404).json({error: "Board não encontrado..."});
         }
     }
 
@@ -31,10 +31,10 @@ class boardController {
         try{
             const userId = parseInt(req.params.userId);
             const boards = await boardService.buscarPorUsuario(userId);
-            res.json(boards);
+            return res.json(boards);
 
         }catch(error) {
-            res.status(500).json({ error: "Error ao buscar boards do usuário..."});
+            return res.status(500).json({ error: "Error ao buscar boards do usuário..."});
         }
     }
 
@@ -45,10 +45,10 @@ class boardController {
             if (!title || !userId) return res.status(400).json({ error: "title e userId são obrigatórios"});
 
             const novoBoard = await boardService.criar({ title, description, userId });
-            res.status(201).json(novoBoard);
+            return res.status(201).json(novoBoard);
 
         }catch(error){
-            res.status(500).json({ error: "Erro ao criar board..."});
+            return res.status(500).json({ error: "Erro ao criar board..."});
         }
     }
 
@@ -59,10 +59,10 @@ class boardController {
             const dados = req.body;
 
             const atualizado = await boardService.atualizar(id, dados);
-            res.json(atualizado);
+            return res.json(atualizado);
 
         }catch(error) {
-            res.status(404).json({ error: "board não encontrador..."});
+            return res.status(404).json({ error: "board não encontrador..."});
         }
     }
 
@@ -72,10 +72,10 @@ class boardController {
             const id = parseInt(req.params.id);
 
             await boardService.deletar(id);
-            res.json({ message: "board foi deletado com sucesso."});
+            return res.json({ message: "board foi deletado com sucesso."});
 
         }catch(error){
-            res.status(404).json({ error: "board não encontrado..."});
+            return res.status(404).json({ error: "board não encontrado..."});
         }
     }
 }

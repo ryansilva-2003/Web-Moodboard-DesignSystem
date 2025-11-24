@@ -1,4 +1,4 @@
-const userService = require("../Service/userService");
+const userService = require("../Services/userService");
 
 class UserController {
 
@@ -6,10 +6,10 @@ class UserController {
     async buscarTodos (req, res) {
         try{
             const users = await userService.buscarTodos();
-            res.json(users);
+            return res.json(users);
 
         }catch(error){
-            res.status(500).json({error: "Erro ao buscar usuários..."});
+            return res.status(500).json({error: "Erro ao buscar usuários..."});
         }
     }
 
@@ -19,10 +19,10 @@ class UserController {
             const id = parseInt(req.params.id);
 
             const user = await userService.buscarId(id);
-            res.json(user);
+            return res.json(user);
 
         }catch(error){
-            res.status(404).json({error: "Erro ao buscar usuário..."});
+            return res.status(404).json({error: "Erro ao buscar usuário..."});
         }
     }
 
@@ -32,10 +32,11 @@ class UserController {
             const dados = req.body;
 
             const novoUsuario = await userService.criar(dados);
-            res.status(201).json(novoUsuario);
+            const  { password, ...userSafe } = novoUsuario;
+            return res.status(201).json(novoUsuario);
 
         }catch(error){
-            res.status(400).json({error: "Erro ao criar usuário..."});
+            return res.status(400).json({error: "Erro ao criar usuário..."});
         }
     }
 
@@ -46,10 +47,10 @@ class UserController {
             const dados = req.body;
 
             const atualizado = await userService.atualizar(id, dados);
-            res.json(atualizado);
+            return res.json(atualizado);
 
         }catch(error){
-            res.status(404).json({error: "Usuário não encontrado..."});
+            return res.status(404).json({error: "Usuário não encontrado..."});
         }
     }
 
@@ -59,10 +60,10 @@ class UserController {
             const id = parseInt(req.params.id);
 
             await userService.deletar(id);
-            res.json({message: "Usuário foi deletado com sucesso."});
+            return res.json({message: "Usuário foi deletado com sucesso."});
 
         }catch(error){
-            res.status(404).json({ error: "usuário não encontrado..."});
+            return res.status(404).json({ error: "usuário não encontrado..."});
         }
     }
 }
