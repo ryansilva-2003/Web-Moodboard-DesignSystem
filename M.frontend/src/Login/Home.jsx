@@ -15,7 +15,7 @@ export default function Home() {
                 <img src="./img/icon.jpg" alt="icone" className="w-24 h-24 rounded-full border-2 border-gray-400" ></img>
 
                 <span className="mt-2 text-lg font-semibold text-white">Ryan Silva</span>
-                <label className="mt-5 text-lg font-semibold text-white">Bio</label>
+                <label className="mt-5 text-lg font-semibold text-white">mexendo com programação 👾</label>
 
                   <hr className="border-t border-gray-400 w-1/2 mt-4" />
             </div>

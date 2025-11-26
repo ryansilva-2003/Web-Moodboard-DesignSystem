@@ -23,7 +23,7 @@ model Board {
   title       String
   description String?
   colors      String?
-  images      Image[]
+  image       Image[]
   userId      Int
   user        User     @relation(fields: [userId], references: [id])
   createdAt   DateTime @default(now())
