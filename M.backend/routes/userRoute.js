@@ -15,4 +15,7 @@ router.put("/users/:id", (req, res) => userController.atualizar(req, res));
 //delete
 router.delete("/users/:id", (req, res) => userController.deletar(req, res));
 
+//bio
+router.patch("/:id/bio", userController.atualizarBio);
+
 module.exports = router;
