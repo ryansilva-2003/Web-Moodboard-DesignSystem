@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { HslColorPicker } from "react-colorful";
 
 export default function NewBoard(){
     const [IsModalOpen, setIsModalOpen] = useState(false);
@@ -7,16 +8,24 @@ export default function NewBoard(){
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [colors, setColors] = useState("#ffffff");
+    const [color, setColor] = useState({ h: 200, s: 50, l: 50 })
 
     const handleBoardSubmit = async (event) => {
         event.preventDefault();
 
+        if (!title || !image) {
+            alert("Título e imagem são obrigatórios.");
+             return;
+        }
+
+        const formData = new FormData();
+        formData.append("title", title);
+        formData.append("description", description);
+        formData.append("colors", JSON.stringify(colors));
+        formData.append("image", image);
+
         try{
-            const response = await axios.post("http://localhost:4000/boards", {
-                title: title,
-                description: description,
-                colors: colors,
-                image: image
+            const response = await axios.post("http://localhost:4000/create", formData, {
             });
 
             alert("Board foi criado com sucesso!");
@@ -54,7 +63,7 @@ return (
                 <div className="bg-[#1f1f1f] text-white p-6 rounded-xl w-[800px] h-[500px] shadow-xl flex overflow-hidden">
 
                     {/* lado esquerdo */}
-                    <div className="w-1/2 bg-[#dfdfdf] flex flex-col justify-center">
+                    <div className="w-1/2 flex flex-col justify-center mr-10">
 
                         <div className="flex-1 flex items-center justify-center p-5">
                             {image ? (
@@ -116,6 +125,7 @@ return (
 
                         <div>
                             <label className="block font-semibold mt-3 mb-1">Cor do Board</label>
+                            
                             <input 
                                 type="color" 
                                 value={colors} 
@@ -130,7 +140,7 @@ return (
                             type="submit" 
                             className="cursor-pointer w-full bg-blue-600 mt-6 text-white py-2 rounded-lg hover:bg-blue-700 transition">Criar Board</button>
 
-                            <button type="button" onClick={() => setIsModalOPen(false)} className="cursor-pointer w-full bg-gray-600 mt-3 text-white py-2 rounded-lg hover:bg-gray-700 transition">Fechar</button>
+                            <button type="button" onClick={() => setIsModalOpen(false)} className="cursor-pointer w-full bg-gray-600 mt-3 text-white py-2 rounded-lg hover:bg-gray-700 transition">Fechar</button>
 
                     </form>
 
