@@ -11,6 +11,7 @@ export default function Login() {
     const [regPassword, setRegPassword] = useState("");
     const navigate = useNavigate();
 
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         console.log('teste', email, password);
@@ -22,8 +23,9 @@ export default function Login() {
                 password: password
             });
 
-            console.log(response.data);
-            localStorage.setItem("token", response.data.token);
+    localStorage.setItem("token", response.data.token);
+    localStorage.setItem("username", response.data.user.nome);
+    
             alert("Login realizado com sucesso!");
             navigate("/Home");
 

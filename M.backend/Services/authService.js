@@ -13,12 +13,19 @@ class authService {
         if(!senhaCorreta) throw new Error("Senha inválida");
 
         const token = jwt.sign(
-            {id: user.id, email: user.email},
+            {id: user.id, email: user.email, name: user.name},
             process.env.JWT_SECRET,
             { expiresIn: "5m" }
         );
 
-        return { token, user };
+        return {
+            token,
+            user: {
+                id: user.id,
+                nome: user.name,
+                email: user.email
+            }
+        };
     }
 
     async registrar (nome, email, senha) {

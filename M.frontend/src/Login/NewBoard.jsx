@@ -9,11 +9,17 @@ export default function NewBoard(){
     const [description, setDescription] = useState("");
     const [colors, setColors] = useState("#ffffff");
     const [boards, setBoards] = useState([]);
+    const token = localStorage.getItem("token");
+    console.log("TOKEN:", token);
 
     useEffect(() => {
         async function carregarBoards() {
             try {
-                const response = await axios.get("http://localhost:4000/boards");
+                const response = await axios.get("http://localhost:4000/boards/user", {
+                    headers:{
+                        Authorization: `Bearer ${token}`
+                    }
+                });
                 setBoards(response.data);
             } catch (error) {
                 console.log("Erro ao carregar boards:", error);
@@ -37,7 +43,12 @@ export default function NewBoard(){
         formData.append("image", image);
 
         try{
-            const response = await axios.post("http://localhost:4000/create", formData)
+            const response = await axios.post("http://localhost:4000/boards", formData, {
+                headers:{
+                    Authorization:`Bearer ${token}`,
+                    "Content-Type": "multipart/form-data"
+                }
+            });
 
             const novoBoard = response.data;
 
@@ -62,7 +73,7 @@ export default function NewBoard(){
     }
 
 return (
-    <div className="w-screen min-h-screen bg-[#2b2b2b] text-white p-9">
+    <div className="w-screen min-h-screen bg-[#2b2b2b] text-white p-10">
 
         <h1 className="text-4xl text-black font-bold text-center mt-3">Meus Boards</h1>
 
@@ -174,9 +185,9 @@ return (
         <div key={board.id} className="bg-[#1f1f1f] p-4 rounded-xl shadow-md">
             {board.image && (
                 <img 
-                    src={`http://localhost:4000/uploads/boards/${board.image}`} 
+                    src={`http://localhost:4000/uploads/${board.image}`} 
                     alt="imagem" 
-                    className="w-full h-40 object-cover rounded-md mb-2"
+                    className="w-full h-70 object-contain rounded-md mb-2"
                 />
             )}
             <h2 className="text-white font-bold text-lg">{board.title}</h2>
