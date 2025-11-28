@@ -23,7 +23,7 @@ class boardService {
     // GET boards by user
     async buscarPorUsuario(userId) {
         return await prisma.board.findMany({
-            where: { userId: Number(userId) }
+            where: { userId }
         });
     }
 

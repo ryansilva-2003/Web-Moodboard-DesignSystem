@@ -5,7 +5,7 @@ const upload = require("../middlewares/uploadMiddleware");
 
 //get
 router.get("/boards", (req, res) => boardController.buscarTodos(req, res));
-router.get("/boards/:id", (req,res) => boardController.buscarId(req, res));
+router.post("/create", upload.single("image"), boardController.criar);
 router.get("/users/:userId/boards", (req, res) => boardController.buscarPorUsuario(req,res));
 
 //post

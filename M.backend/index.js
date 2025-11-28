@@ -6,6 +6,7 @@ const path = require("path");
 
 app.use(cors());
 app.use(express.json());
+app.use('/uploads', express.static('Middlewares/uploads'));
 
 //rota user
 const userRoutes = require("./routes/userRoute");

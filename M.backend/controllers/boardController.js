@@ -35,14 +35,14 @@ async criar(req, res) {
     try {
         const { title, description, colors } = req.body;
 
-        const image = req.file ? req.file.filename : null;
+        const image = req.file ? `/uploads/boards/${req.file.filename}` : null;
 
         const novoBoard = await boardService.criar({
             title,
             description,
             colors,
             image,
-            userId: 1
+            userId: req.user.id
         });
 
         return res.status(201).json(novoBoard);

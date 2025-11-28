@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { use, useState } from "react";
 import axios from "axios";
-import { HslColorPicker } from "react-colorful";
+import { useEffect } from "react";
 
 export default function NewBoard(){
     const [IsModalOpen, setIsModalOpen] = useState(false);
@@ -8,7 +8,19 @@ export default function NewBoard(){
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [colors, setColors] = useState("#ffffff");
-    const [color, setColor] = useState({ h: 200, s: 50, l: 50 })
+    const [boards, setBoards] = useState([]);
+
+    useEffect(() => {
+        async function carregarBoards() {
+            try {
+                const response = await axios.get("http://localhost:4000/boards");
+                setBoards(response.data);
+            } catch (error) {
+                console.log("Erro ao carregar boards:", error);
+            }
+        }
+        carregarBoards();
+    }, []);
 
     const handleBoardSubmit = async (event) => {
         event.preventDefault();
@@ -25,11 +37,19 @@ export default function NewBoard(){
         formData.append("image", image);
 
         try{
-            const response = await axios.post("http://localhost:4000/create", formData, {
-            });
+            const response = await axios.post("http://localhost:4000/create", formData)
+
+            const novoBoard = response.data;
+
+            setBoards(prev => [novoBoard, ...prev]);
 
             alert("Board foi criado com sucesso!");
             setIsModalOpen(false);
+
+            setTitle("");
+            setDescription("");
+            setImage(null);
+            setColors("#ffffff");
 
         } catch(error){
             console.log(error);
@@ -42,11 +62,11 @@ export default function NewBoard(){
     }
 
 return (
-    <div className="w-screen min-h-screen bg-[#2b2b2b] text-white p-10">
+    <div className="w-screen min-h-screen bg-[#2b2b2b] text-white p-9">
 
-        <h1 className="text-4xl text-black font-bold text-center mt-7">Meus Boards</h1>
+        <h1 className="text-4xl text-black font-bold text-center mt-3">Meus Boards</h1>
 
-        <div className="flex justify-center mt-10">
+        <div className="flex justify-center mt-6">
             <button 
                 type="button" 
                 onClick={() => setIsModalOpen(true)} 
@@ -148,6 +168,28 @@ return (
 
             </div>
         )}
+
+<div className="mt-10 grid grid-cols-3 gap-6">
+    {boards.map(board => (
+        <div key={board.id} className="bg-[#1f1f1f] p-4 rounded-xl shadow-md">
+            {board.image && (
+                <img 
+                    src={`http://localhost:4000/uploads/boards/${board.image}`} 
+                    alt="imagem" 
+                    className="w-full h-40 object-cover rounded-md mb-2"
+                />
+            )}
+            <h2 className="text-white font-bold text-lg">{board.title}</h2>
+            {board.description && <p className="text-gray-400">{board.description}</p>}
+            {board.colors && (
+                <div 
+                    className="w-full h-4 rounded mt-2" 
+                    style={{ backgroundColor: board.colors }}
+                />
+            )}
+        </div>
+    ))}
+</div>
 
     </div>
 )};
