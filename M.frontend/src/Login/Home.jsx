@@ -16,7 +16,7 @@ export default function Home() {
     }, []);
 
     return(
-        <div className="w-screen h-screen bg-[#2b2b2b] flex flex-col">
+        <div className="w-screen min-h-screen bg-[#2b2b2b] flex flex-col">
             <Header/>
             <div className="flex flex-col items-center mt-20">
                 <img src="./img/icon.jpg" alt="icone" className="w-24 h-24 rounded-full border-2 border-gray-400" ></img>

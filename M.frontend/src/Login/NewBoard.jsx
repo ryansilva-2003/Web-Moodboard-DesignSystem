@@ -39,7 +39,7 @@ export default function NewBoard(){
         const formData = new FormData();
         formData.append("title", title);
         formData.append("description", description);
-        formData.append("colors", JSON.stringify(colors));
+        formData.append("colors", colors);
         formData.append("image", image);
 
         try{
