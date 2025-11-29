@@ -19,7 +19,7 @@ export default function Home() {
         <div className="w-screen min-h-screen bg-[#2b2b2b] flex flex-col">
             <Header/>
             <div className="flex flex-col items-center mt-20">
-                <img src="./img/icon.jpg" alt="icone" className="w-24 h-24 rounded-full border-2 border-gray-400" ></img>
+                <img src="./img/usuarioImage.jpg" alt="icone" className="w-24 h-24 rounded-full border-2 border-gray-400" ></img>
 
                 <span className="mt-2 text-lg font-semibold text-white">{username}</span>
                 <label className="mt-5 text-lg font-semibold text-white">mexendo com programação 👾</label>

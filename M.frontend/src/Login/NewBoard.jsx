@@ -10,6 +10,7 @@ export default function NewBoard(){
     const [colors, setColors] = useState("#ffffff");
     const [boards, setBoards] = useState([]);
     const token = localStorage.getItem("token");
+    const [editId, setEditId] = useState(null);
     console.log("TOKEN:", token);
 
     useEffect(() => {
@@ -31,8 +32,8 @@ export default function NewBoard(){
     const handleBoardSubmit = async (event) => {
         event.preventDefault();
 
-        if (!title || !image) {
-            alert("Título e imagem são obrigatórios.");
+        if (!title) {
+            alert("Título é obrigatórios.");
              return;
         }
 
@@ -40,23 +41,40 @@ export default function NewBoard(){
         formData.append("title", title);
         formData.append("description", description);
         formData.append("colors", colors);
+
+        if(image){
         formData.append("image", image);
+        }
 
         try{
-            const response = await axios.post("http://localhost:4000/boards", formData, {
+
+            let response;
+
+            if(editId){
+            response = await axios.put(`http://localhost:4000/boards/${editId}`, formData, {
                 headers:{
                     Authorization:`Bearer ${token}`,
                     "Content-Type": "multipart/form-data"
                 }
             });
 
-            const novoBoard = response.data;
+            setBoards(prev => prev.map(b => (b.id === editId ? response.data.board : b)));
 
-            setBoards(prev => [novoBoard, ...prev]);
+            alert("Board foi atualizado com sucesso!");
+        } else {
 
-            alert("Board foi criado com sucesso!");
+            response = await axios.post("http://localhost:4000/boards", formData,{
+                headers:{
+                    Authorization:`Bearer ${token}`,
+                    "Content-Type": "multipart/form-data"
+            }
+        });
+        setBoards(prev => [response.data,...prev]);
+        alert("Board foi criado com sucesso!");
+    }
+
             setIsModalOpen(false);
-
+            setEditId(null);
             setTitle("");
             setDescription("");
             setImage(null);
@@ -70,7 +88,16 @@ export default function NewBoard(){
                 alert("Problema ao registrar novo Board.");
             }
         }
-    }
+    };
+
+        const handleEdit = (board) => {
+            setEditId(board.id);
+            setTitle(board.title);
+            setDescription(board.description);
+            setColors(board.colors);
+            setImage(board.image);
+            setIsModalOpen(true);
+        }
 
 return (
     <div className="w-screen min-h-screen bg-[#2b2b2b] text-white p-10">
@@ -81,8 +108,7 @@ return (
             <button 
                 type="button" 
                 onClick={() => setIsModalOpen(true)} 
-                className="px-5 py-2 bg-transparent border border-gray-900 text-gray-500 rounded-2xl hover:text-white hover:border-blue-500 transform transition duration-500 hover:scale-105 cursor-pointer flex items-center gap-2"
-            >
+                className="px-6 py-3 bg-transparent border border-gray-900 text-gray-500 rounded-2xl hover:text-white hover:border-blue-500 transform transition duration-500 hover:scale-105 cursor-pointer flex items-center gap-2 hover:shadow-[0_0_10px_#3b82f6]">
                 <span className="material-symbols-outlined">add_2</span>
                 Novo Board
             </button>
@@ -91,30 +117,34 @@ return (
         {IsModalOpen && (
             <div className="fixed inset-0 flex items-center justify-center bg-black/80 z-20">
 
-                <div className="bg-[#1f1f1f] text-white p-6 rounded-xl w-[800px] h-[500px] shadow-xl flex overflow-hidden">
+                <div className="bg-[#1f1f1f] text-white p-6 rounded-xl w-[1100px] h-[700px] shadow-xl flex overflow-hidden">
 
                     {/* lado esquerdo */}
                     <div className="w-1/2 flex flex-col justify-center mr-10">
 
                         <div className="flex-1 flex items-center justify-center p-5">
                             {image ? (
+                                typeof image === "string" ? (
+                                    <img 
+                                    src={`http://localhost:4000/uploads/${image}`}
+                                    alt="Preview"
+                                    className="object-contain"/>
+                                ) : (
                                 <img 
                                     src={URL.createObjectURL(image)} 
                                     alt="Preview" 
-                                    className="object-contain"
-                                />
+                                    className="object-contain"/>
+                                )
                             ) : (
-                                <p className="text-gray-600">Nenhuma imagem selecionada</p>
+                                <p className="text-gray-600 bg-[#a0a0a0] w-full h-full flex items-center justify-center">Nenhuma imagem selecionada<span class="material-symbols-outlined">hide_image</span></p>
                             )}
                         </div>
 
                         <div className="p-4">
                             <label 
                                 htmlFor="fileInput" 
-                                className="flex items-center justify-center w-full py-3 px-4 bg-[#3a3a3a] text-white rounded-lg cursor-pointer hover:bg-[#4a4a4a] transition"
-                            >
-                                Selecionar Imagem
-                            </label>
+                                className="flex items-center justify-center w-full py-3 px-4 bg-[#3a3a3a] text-white rounded-lg cursor-pointer hover:bg-[#4a4a4a] transition">
+                                SELECIONAR IMAGEM<span class="material-symbols-outlined">add_photo_alternate</span></label>
 
                             <input 
                                 type="file" 
@@ -130,7 +160,7 @@ return (
                     <form className="w-1/2 p-3 flex flex-col justify-between" onSubmit={handleBoardSubmit}>
 
                         <div>
-                            <label className="block font-semibold mb-1">Título</label>
+                            <label className="block font-semibold mb-1">TÍTULO</label>
                             <input 
                                 type="text" 
                                 value={title} 
@@ -140,38 +170,37 @@ return (
                             />
                         </div>
 
-                        <hr className="border-t border-gray-500 mt-2 w-full" />
+                        <hr className="border-t border-orange-500 mt-2 w-full" />
 
                         <div>
-                            <label className="block font-semibold mt-2 mb-1">Descrição</label>
+                            <label className="block font-semibold mb-1">DESCRIÇÃO</label>
                             <textarea 
                                 value={description} 
                                 onChange={(e) => setDescription(e.target.value)}
-                                className="w-full h-25 py-2 px-3 border rounded" 
+                                className="w-full h-50 py-2 px-3 border rounded" 
                                 placeholder="Ex: Arte que fiz para representar o verão que tive..."
                             />
                         </div>
 
-                        <hr className="border-t border-gray-500 w-full" />
+                        <hr className="border-t border-orange-500 w-full" />
 
                         <div>
-                            <label className="block font-semibold mt-3 mb-1">Cor do Board</label>
+                            <label className="block font-semibold mb-1">COR DO BOARD</label>
                             
                             <input 
                                 type="color" 
                                 value={colors} 
                                 onChange={(e) => setColors(e.target.value)} 
-                                className="w-full h-15 p-1 cursor-pointer rounded" 
-                            />
+                                className="w-full h-15 cursor-pointer"/>
                         </div>
 
-                        <hr className="border-t border-gray-500 w-full" />
+                        <hr className="border-t border-orange-500 w-full" />
 
                         <button 
                             type="submit" 
-                            className="cursor-pointer w-full bg-blue-600 mt-6 text-white py-2 rounded-lg hover:bg-blue-700 transition">Criar Board</button>
+                            className="cursor-pointer w-full bg-blue-600 mt-6 text-white py-2 rounded-lg hover:bg-blue-700 transition">CRIAR BOARD</button>
 
-                            <button type="button" onClick={() => setIsModalOpen(false)} className="cursor-pointer w-full bg-gray-600 mt-3 text-white py-2 rounded-lg hover:bg-gray-700 transition">Fechar</button>
+                            <button type="button" onClick={() => setIsModalOpen(false)} className="cursor-pointer w-full bg-gray-600 mt-1 text-white py-2 rounded-lg hover:bg-gray-700 transition">FECHAR</button>
 
                     </form>
 
@@ -180,24 +209,33 @@ return (
             </div>
         )}
 
-<div className="mt-10 grid grid-cols-3 gap-6">
+<div className="mt-10 grid grid-cols-3 gap-12 ">
     {boards.map(board => (
-        <div key={board.id} className="bg-[#1f1f1f] p-4 rounded-xl shadow-md">
+        <div key={board.id} className="bg-[#1f1f1f] p-4 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-3 transition-all duration-300 cursor-pointer border border-gray-700 mb-10">
             {board.image && (
                 <img 
                     src={`http://localhost:4000/uploads/${board.image}`} 
                     alt="imagem" 
-                    className="w-full h-70 object-contain rounded-md mb-2"
+                    className="w-full h-70 object-contain rounded-xl mb-3"
                 />
             )}
-            <h2 className="text-white font-bold text-lg">{board.title}</h2>
-            {board.description && <p className="text-gray-400">{board.description}</p>}
+            <h2 className="text-xl font-semibold text-white">{board.title}</h2>
+            {board.description && <p className="text-gray-400 text-sm mt-1">{board.description}</p>}
             {board.colors && (
                 <div 
-                    className="w-full h-4 rounded mt-2" 
-                    style={{ backgroundColor: board.colors }}
-                />
+                    className="w-full h-4 rounded mt-5" 
+                    style={{ backgroundColor: board.colors }}/>
+
+                    
             )}
+
+        <button 
+            onClick={() => handleEdit(board)}
+            className="bg-blue-500 text-white px-2 py-1 mt-5 rounded cursor-pointer"
+        >
+            Editar
+        </button>
+            
         </div>
     ))}
 </div>

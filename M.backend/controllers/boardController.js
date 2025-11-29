@@ -57,13 +57,28 @@ async criar(req, res) {
     async atualizar(req, res) {
         try {
             const id = parseInt(req.params.id);
-            const dados = req.body;
+            const {title, description, colors} = req.body;
+            const newImage = req.file ? `boards/${req.file.filename}` : null;
 
-            const atualizado = await boardService.atualizar(id, dados);
-            return res.json(atualizado);
+            const board = await boardService.buscarId(id);
+
+            if(!board){
+                return res.status(404).json({ error: "Board não encontrado"});
+            }
+
+            const dadosAtualizado ={
+                title,
+                description,
+                colors,
+                image: newImage ? newImage : board.image
+            };
+
+            const atualizado = await boardService.atualizar(id, dadosAtualizado);
+
+            return res.json({ message: " board foi atualizado", board: atualizado});
 
         } catch (error) {
-            return res.status(404).json({ error: "board não encontrado..." });
+            return res.status(500).json({ error: "ERRO ao atualizar board..." });
         }
     }
 

@@ -7,7 +7,7 @@ export default function Header(){
                 <div className="text-3xl font-bold">MoodBoard</div>
 
                 <nav className="space-x-6">
-                    <a href="/" className="hover:text-gray-200 mr-10">Sair</a>
+                    <a href="/" className="hover:text-gray-200 mr-10 flex items-center gap-1">SAIR<span class="material-symbols-outlined">power_settings_new</span></a>
                 </nav>
             </div>
         </header>
