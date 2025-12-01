@@ -19,8 +19,7 @@ export default function NewBoard(){
         async function carregarBoards() {
             try {
                 const response = await axios.get("http://localhost:4000/boards/user", {
-                    headers:{
-                        Authorization: `Bearer ${token}`
+                    headers:{Authorization: `Bearer ${token}`
                     }
                 });
                 setBoards(response.data);
@@ -107,6 +106,25 @@ export default function NewBoard(){
             setColors(board.colors);
             setImage(board.image);
             setIsModalOpen(true);
+        }
+
+        async function deletarBoard() {
+            try{
+                const res = await axios.delete(`http://localhost:4000/boards/${editId}`, {
+                    headers: {Authorization: `Bearer ${token}`}
+                });
+
+                alert("Board deletado!");
+
+                setBoards(prev => prev.filter(b=>b.id !== editId));
+
+                setIsModalOpen(false);
+                setEditId(null);
+
+            } catch(error){
+                console.log(error);
+                alert("Erro ao deletar");
+            }
         }
 
 return (
@@ -212,10 +230,11 @@ return (
                             type="submit" 
                             className="cursor-pointer w-full bg-blue-600 mt-6 text-white py-3 rounded-lg hover:bg-blue-700 transition">{editId ? "SALVAR ALTERAÇÕES" : "CRIAR NOVO BOARD"}</button>
 
-                            <button type="s" className="cursor-pointer w-full bg-gray-500 mt-3 py-2 rounded-lg hover:bg-red-700 transition flex justify-center"><span class="material-symbols-outlined">delete</span>Deletar</button>
+                            {editId && (
+                            <button type="button" className="cursor-pointer w-full bg-gray-500 mt-3 py-2 rounded-lg hover:bg-red-700 transition flex justify-center" onClick={deletarBoard}><span class="material-symbols-outlined">delete</span>Deletar</button>
+                            )}
 
                             <button type="button" onClick={() => { limparCampos(); setIsModalOpen(false)}}className="cursor-pointer w-full bg-gray-600 mt-1 text-white py-2 rounded-lg hover:bg-gray-700 transition">Cancelar</button>
-
                     </form>
 
             </div>

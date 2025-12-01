@@ -63,7 +63,7 @@ export default function Login() {
     };
 
     return (
-    <div className="w-screen h-screen flex items-center justify-center bg-gradient-to-tr from-orange-300 to-blue-500">
+    <div className="w-screen h-screen flex items-center justify-center bg-gradient-to-tr from-orange-300 to-blue-700">
         <div className="relative flex flex-col m-6 space-y-8 bg-white shadow-2xl rounded-2xl md:flex-row md:space-y-0">
             <form onSubmit={handleSubmit}>
                 <div className="flex flex-col justify-center p-8 md:p-14">

@@ -86,11 +86,18 @@ async criar(req, res) {
         try {
             const id = parseInt(req.params.id);
 
-            await boardService.deletar(id);
-            return res.json({ message: "Board deletado com sucesso." });
+            const board = await boardService.buscarId(id);
 
+            if(!board){
+                return res.status(404).json({ message: "Board não foi encontrado..." });
+            }
+
+            await boardService.deletar(id);
+
+            return res.json({ message: "Board foi deletado com sucesso!"});
         } catch (error) {
-            return res.status(404).json({ error: "board não encontrado..." });
+            console.log(error);
+            return res.status(500).json({ error: "Erro ao deletar o board..." });
         }
     }
 }
