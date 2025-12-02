@@ -130,16 +130,14 @@ export default function NewBoard(){
 return (
     <div className="w-screen min-h-screen bg-[#2b2b2b] text-white p-10">
 
-        <h1 className="text-4xl text-black font-bold text-center mt-3">Meus Boards</h1>
+        <h1 className="text-4xl font-semibold text-center mt-3 tracking-wide">Meus Boards</h1>
 
         <div className="flex justify-center mt-6">
             <button 
                 type="button" 
                 onClick={() => setIsModalOpen(true)} 
-                className="px-6 py-3 bg-transparent border border-gray-900 text-gray-500 rounded-2xl hover:text-white hover:border-blue-500 transform transition duration-500 hover:scale-105 cursor-pointer flex items-center gap-2 hover:shadow-[0_0_10px_#3b82f6]">
-                <span className="material-symbols-outlined">add_2</span>
-                Novo Board
-            </button>
+                className="px-3 py-3 bg-transparent border border-gray-900 text-gray-500 text-sm rounded-full hover:text-white hover:border-gray-500 transform transition duration-500 hover:scale-105 cursor-pointer flex items-center gap-2 hover:shadow-[0_0_5px_gray]">
+                <span className="material-symbols-outlined">add_2</span></button>
         </div>
 
         {IsModalOpen && (
@@ -242,7 +240,7 @@ return (
             </div>
         )}
 
-            <div className="mt-10 columns-5 gap-12">
+            <div className="mt-10 columns-6 gap-3">
                 {boards.map(board => (
                 <div key={board.id} className="bg-[#404040] p-4 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-3 transition-all duration-300 cursor-pointer border border-gray-700 mb-6 break-inside-avoid">
                 {board.image && (
