@@ -41,7 +41,11 @@ class UserService{
 
         return await prisma.user.update({
             where: { id: userId },
-            data: dados
+            data: {
+                name: dados.name,
+                bio: dados.bio || undefined,
+                icon: dados.icon
+            }
         });
     }
 

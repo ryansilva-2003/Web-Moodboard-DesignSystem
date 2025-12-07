@@ -33,7 +33,7 @@ class UserController {
 
             const novoUsuario = await userService.criar(dados);
             const  { password, ...userSafe } = novoUsuario;
-            return res.status(201).json(novoUsuario);
+            return res.status(201).json(userSafe);
 
         }catch(error){
             return res.status(400).json({error: "Erro ao criar usuário..."});
@@ -41,18 +41,36 @@ class UserController {
     }
 
     //put
-    async atualizar (req,res) {
+    async atualizar (req, res) {
         try{
             const id = parseInt(req.params.id);
-            const dados = req.body;
+            const {name, bio} = req.body;
+            const icon = req.file ? `users/${req.file.filename}` : null;
 
-            const atualizado = await userService.atualizar(id, dados);
-            return res.json(atualizado);
+            const user = await userService.buscarId(id);
 
-        }catch(error){
-            return res.status(404).json({error: "Usuário não encontrado..."});
-        }
+            if(!user){
+                return res.status(404).json({ error: "Usuário não encotrado..."});
+            }
+
+            const dadosAtualizado ={
+                name,
+                newIcon,
+                bio
+            };
+            
+            const atualizado = await userService.atualizar(id, dadosAtualizado);
+
+            const { password, ...safeUser } = atualizado;
+            return res.json(safeUser);
+
+            return res.json({ message: "Dados do usuário foram atualizados!", user: atualizado});
+
+    }catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: "Erro ao atualizar usuário"});
     }
+}
 
     //delete
     async deletar (req, res) {
@@ -66,28 +84,6 @@ class UserController {
             return res.status(404).json({ error: "usuário não encontrado..."});
         }
     }
-
-    //bio
-    async atualizarBio (req, res) {
-        try{
-            const id = parseInt(req.params.id);
-            const { bio } = req.body;
-
-            if (bio === undefined){
-                return res.status(400).json({ error: "O campo 'bio' precisa existir mesmo que vazio"});
-            }
-
-        const atualizado = await userService.atualizar(id, {bio});
-
-        const { password, ...safeUser} = atualizado;
-
-        return res.json(safeUser);
-
-    }catch (error) {
-        console.log(error);
-        return res.status(500).json({ error: "Erro ao atualizar bio"});
-    }
-}
 }
 
 module.exports = new UserController();

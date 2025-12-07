@@ -63,7 +63,7 @@ export default function Login() {
     };
 
     return (
-    <div className="w-screen h-screen flex items-center justify-center bg-gradient-to-tr from-orange-300 to-blue-700">
+    <div className="w-screen h-screen flex items-center justify-center bg-gradient-to-tr from-orange-300 to-blue-600">
         <div className="relative flex flex-col m-6 space-y-8 bg-white shadow-2xl rounded-2xl md:flex-row md:space-y-0">
             <form onSubmit={handleSubmit}>
                 <div className="flex flex-col justify-center p-8 md:p-14">
@@ -78,29 +78,22 @@ export default function Login() {
                     <input type = "password" placeholder='Senha' value={password} onChange={(e) => setPassword(e.target.value)} className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-200 focus:border-transparent"/>
                     </div>
 
-                    <div className="flex justify-between w-full py-5">
-                        <div className="mr-24">
-                            <input type="checkbox" name="ch" id="ch" className="mr-2"></input>
-                            <span className="text-md">Lembrar de mim</span>
-                        </div>
-                    </div>
-
-                    <button className="w-full bg-black text-white p-2 rounded-lg mb-10 hover:bg-gradient-to-tr from-gray-500 to-gray-700 hover:text-white hover:border hover:border-gray-300 cursor-pointer">Entrar</button>
+                    <button className="w-full bg-black text-white p-2 rounded-lg mt-7 mb-10 hover:bg-gradient-to-tr from-gray-500 to-gray-700 hover:text-white hover:border hover:border-gray-300 cursor-pointer">Entrar</button>
 
                     <div className="text-center text-gray-400">Não tem nenhuma conta? <button className="font-bold text-black cursor-pointer hover:underline" type="button" onClick={() => setIsModalOPen(true)}>Registrar</button>
                     </div>
 
-                    <div className="text-center text-gray-400 mt-50">Desenvolvido por Ryan Silva</div>
+                    <div className="text-center text-gray-400 mt-50">Desenvolvido por Ryan Oliveira</div>
                     </div>
                 </form>
 
-                    <div className="relative">
-                        <img src="./img/image.jpg" alt="img" className="w-[450px] h-full hidden rounded-r-2xl md:block object-cover shadow-r-2x1"></img>
-                    </div>
+                <div className="relative flex flex-col justify-center items-center">
+                    <img src="./img/image.jpg" alt="img" className="w-[450px] h-full hidden rounded-r-2xl md:block object-cover shadow-r-2x1"/>
 
-                    <div className="absolute hidden bottom-10 right-20 p-3 bg-white/10 backdrop-blur-sm rounded-lg shadow-lg md:block">
-                    <span className="text-white text-sm font-medium">Organize suas artes e inspire sua criatividade</span>
+                    <div className="absolute bottom-10 right-10 p-3 bg-white/10 backdrop-blur-sm rounded-lg shadow-lg md:block">
+                    <span className="text-white text-sm font-medium text-center block">Crie boards, salve suas imagens e descreva suas ideias.</span>
                     </div>
+                </div>
 
 
                     {IsModalOPen && (

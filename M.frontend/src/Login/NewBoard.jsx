@@ -240,7 +240,7 @@ return (
             </div>
         )}
 
-            <div className="mt-10 columns-6 gap-3">
+            <div className="mt-10 columns-6 gap-5">
                 {boards.map(board => (
                 <div key={board.id} className="bg-[#404040] p-4 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-3 transition-all duration-300 cursor-pointer border border-gray-700 mb-6 break-inside-avoid">
                 {board.image && (
@@ -260,7 +260,7 @@ return (
             {board.description && <p className="text-gray-400 text-sm mt-1">{board.description}</p>}
             {board.colors && (
                 <div 
-                    className="w-full h-6 rounded mt-5" 
+                    className="w-full h-7 rounded mt-5" 
                     style={{ backgroundColor: board.colors }}/>
                 )}
 
