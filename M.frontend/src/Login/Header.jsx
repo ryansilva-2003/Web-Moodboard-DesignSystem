@@ -24,6 +24,8 @@ export default function Header(){
                                 <div className="flex flex-col items-center mt-15">
                                     <img src="./img/usuarioImage.jpg" alt="userImage" className="w-30 h-30 rounded-full border-2 border-gray-400 object-cover"/>
                                 </div>
+
+                                <div className=""></div>
                                 
                             </div>
                         </div>
