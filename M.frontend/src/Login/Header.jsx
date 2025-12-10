@@ -21,6 +21,8 @@ export default function Header(){
                                 <div className="text-center text-gray-500 text-2xl font-semibold">Editar perfil</div>
                                 </div>
 
+                                <form className=""></form>
+
                                 <div className="flex flex-col items-center mt-15">
                                     <img src="./img/usuarioImage.jpg" alt="userImage" className="w-30 h-30 rounded-full border-2 border-gray-400 object-cover"/>
                                 </div>
