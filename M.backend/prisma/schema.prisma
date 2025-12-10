@@ -12,7 +12,7 @@ model User {
   name      String
   email     String   @unique
   password  String
-  icon      Image?   @relation("UserIcon") // 1-1 relação com Image
+  icon      String?
   bio       String?
   boards    Board[]
   createdAt DateTime @default(now())
@@ -26,16 +26,5 @@ model Board {
   image       String?
   userId      Int
   user        User     @relation(fields: [userId], references: [id])
-  images      Image[] // múltiplas imagens relacionadas ao board
   createdAt   DateTime @default(now())
-}
-
-model Image {
-  id        Int      @id @default(autoincrement())
-  url       String
-  user      User?    @relation("UserIcon", fields: [userId], references: [id])
-  userId    Int?     @unique // necessário para one-to-one
-  board     Board?   @relation(fields: [boardId], references: [id])
-  boardId   Int?
-  createdAt DateTime @default(now())
 }

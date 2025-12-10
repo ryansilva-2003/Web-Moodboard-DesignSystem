@@ -91,11 +91,7 @@ export default function NewBoard(){
 
         } catch(error){
             console.log(error);
-            if(error.response?.data?.error){
-                alert(error.response.data.error);
-            }else{
-                alert("Problema ao registrar novo Board.");
-            }
+                alert(error.response.data.error || "Problema ao registrar novo Board.");
         }
     };
 
@@ -210,7 +206,7 @@ return (
                             />
                         </div>
 
-                        <hr className="border-t border-orange-500 w-full" />
+                        <hr className="border-orange-500 w-full"/>
 
                         <div>
                             <label className="block font-semibold mb-1 text-xl">COR DO BOARD</label>
@@ -222,7 +218,7 @@ return (
                                 className="w-full h-16 cursor-pointer"/>
                         </div>
 
-                        <hr className="border-t border-orange-500 w-full" />
+                        <hr className="border-orange-500 w-full"/>
 
                         <button 
                             type="submit" 
@@ -232,7 +228,7 @@ return (
                             <button type="button" className="cursor-pointer w-full bg-gray-500 mt-3 py-2 rounded-lg hover:bg-red-700 transition flex justify-center" onClick={deletarBoard}><span class="material-symbols-outlined">delete</span>Deletar</button>
                             )}
 
-                            <button type="button" onClick={() => { limparCampos(); setIsModalOpen(false)}}className="cursor-pointer w-full bg-gray-600 mt-1 text-white py-2 rounded-lg hover:bg-gray-700 transition">Cancelar</button>
+                            <button type="button" onClick={() => {limparCampos(); setIsModalOpen(false)}}className="cursor-pointer w-full bg-gray-600 mt-1 text-white py-2 rounded-lg hover:bg-gray-700 transition">Cancelar</button>
                     </form>
 
             </div>
