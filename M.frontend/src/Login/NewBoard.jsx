@@ -27,8 +27,12 @@ export default function NewBoard(){
                 console.log("Erro ao carregar boards:", error);
             }
         }
+
+        if(token){
         carregarBoards();
-    }, []);
+        }
+
+    }, [token]);
 
             const limparCampos = () => {
             setEditId(null);

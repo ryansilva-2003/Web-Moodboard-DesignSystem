@@ -23,6 +23,11 @@ export default function Header(){
         fetchUser();
     }, []);
 
+    const limparCampos = () => {
+        setEditUserId(null);
+        setBio("");
+    };
+
 
     const handleUserSubmit = async (event) => {
         event.preventDefault();
@@ -68,8 +73,10 @@ export default function Header(){
             <div className="mx-auto px-10 py-6 flex justify-between items-center">
                 <div className="text-3xl font-bold">MoodBoard</div>
 
-                <nav className="space-x-6 flex">
+           <nav className="space-x-6 flex">
+                {user && (
                     <button type="button" onClick={() => handleEdit(user)} className="hover:text-gray-200 mr-10 flex items-center gap-1 cursor-pointer">Editar Perfil</button>
+                )}
 
                     {IsModalOpen && (
                         <div className="fixed inset-0 flex items-center justify-center bg-black/80 z-20">
@@ -112,6 +119,8 @@ export default function Header(){
                                     <input type="text" value={bio} onChange={(e) => setBio(e.target.value)}
                                     className="w-full p-2 border rounded"/>
                                 </div>
+
+                                <button type="button" onClick={() => {limparCampos(), setIsModalOpen(false)}} className="cursor-pointer w-full h-full">Cancelar</button>
                                 
                                 </form>
                             </div>

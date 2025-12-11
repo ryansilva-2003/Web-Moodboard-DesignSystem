@@ -10,7 +10,7 @@ app.use('/uploads', express.static('Middlewares/uploads'));
 
 //rota user
 const userRoutes = require("./routes/userRoute");
-app.use(userRoutes);
+app.use("/users", userRoutes);
 //rota board
 const boardRoutes = require("./routes/boardRoute");
 app.use(boardRoutes);
