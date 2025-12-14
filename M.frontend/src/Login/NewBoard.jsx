@@ -77,9 +77,7 @@ export default function NewBoard(){
         } else {
 
             response = await axios.post("http://localhost:4000/boards", formData,{
-                headers:{
-                    Authorization:`Bearer ${token}`,
-                    "Content-Type": "multipart/form-data"
+                headers:{ Authorization:`Bearer ${token}`, "Content-Type": "multipart/form-data"
             }
         });
         setBoards(prev => [response.data,...prev]);

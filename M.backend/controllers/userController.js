@@ -41,35 +41,36 @@ class UserController {
     }
 
     //put
-    async atualizar (req, res) {
+    async atualizarMe (req, res) {
         try{
-            const id = parseInt(req.params.id);
+            const id = req.user.id;
             const {name, bio} = req.body;
-            const icon = req.file ? `users/${req.file.filename}` : null;
+            const icon = req.file ? `boards/${req.file.filename}` : undefined;
 
-            const user = await userService.buscarId(id);
-
-            if(!user){
-                return res.status(404).json({ error: "Usuário não encotrado..."});
-            }
-
-            const dadosAtualizado ={
-                name,
-                newIcon,
-                bio
-            };
+            const dadosAtualizados = { name, bio };
+            if (icon) dadosAtualizados.icon = icon;
             
-            const atualizado = await userService.atualizar(id, dadosAtualizado);
+            const atualizado = await userService.atualizar(id, dadosAtualizados);
 
             const { password, ...safeUser } = atualizado;
             return res.json(safeUser);
-
-            return res.json({ message: "Dados do usuário foram atualizados!", user: atualizado});
-
     }catch (error) {
         console.log(error);
         return res.status(500).json({ error: "Erro ao atualizar usuário"});
     }
+}
+
+    async buscarMe(req, res) {
+  try {
+    const userId = req.user.id;
+
+    const user = await userService.buscarId(userId);
+    const { password, ...safeUser } = user;
+
+    return res.json(safeUser);
+  } catch (error) {
+    return res.status(500).json({ error: "Erro ao buscar usuário logado" });
+  }
 }
 
     //delete
@@ -84,6 +85,7 @@ class UserController {
             return res.status(404).json({ error: "usuário não encontrado..."});
         }
     }
+
 }
 
 module.exports = new UserController();

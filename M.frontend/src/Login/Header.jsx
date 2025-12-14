@@ -1,36 +1,22 @@
 import axios from "axios";
-import { useEffect } from "react";
 import { useState } from "react";
 
 
-export default function Header(){
+export default function Header({ user, setUser }){
     const [IsModalOpen, setIsModalOpen] = useState(false);
     const [name, setName] = useState("");
     const [bio, setBio] = useState("");
     const [icon, setIcon] = useState(null);
-    const [user, setUser] = useState(null);
-    const token = localStorage.getItem("token");
     const [editUserId, setEditUserId] = useState(null);
-
-    useEffect(() => {
-    async function fetchUser() {
-        const response = await axios.get(`http://localhost:4000/users/me`, {
-            headers: { Authorization: `Bearer ${token}` }
-        });
-        setUser(response.data);
-    }
-
-        fetchUser();
-    }, []);
+    const token = localStorage.getItem("token");
 
     const limparCampos = () => {
         setEditUserId(null);
         setBio("");
     };
 
-
-    const handleUserSubmit = async (event) => {
-        event.preventDefault();
+    const handleUserSubmit = async (e) => {
+        e.preventDefault();
 
         const formData = new FormData();
         formData.append("name", name);
@@ -40,25 +26,14 @@ export default function Header(){
             formData.append("icon", icon);
         }
 
-        try {
+    const response = await axios.put("http://localhost:4000/users/me", formData,{
+        headers: { Authorization: `Bearer ${token}` }
+      }
+    );
 
-            let response;
-
-            if(editUserId){
-                response = await axios.put(`http://localhost:4000/users/${editUserId}`, formData, {
-                    headers:{
-                        Authorization:`Bearer ${token}`,
-                        "Content-type": "multipart/form-data"
-                    }
-                });
-
-                alert("Perfil foi atualizado com sucesso!");
-            }
-        } catch(error){
-            console.log(error);
-            alert(error.response?.data?.error || "Problema ao atualizar perfil.");
-        }
-    };
+    setUser(response.data);
+    setIsModalOpen(false);
+  };
 
         const handleEdit = (user) => {
         setEditUserId(user.id);
@@ -75,38 +50,41 @@ export default function Header(){
 
            <nav className="space-x-6 flex">
                 {user && (
-                    <button type="button" onClick={() => handleEdit(user)} className="hover:text-gray-200 mr-10 flex items-center gap-1 cursor-pointer">Editar Perfil</button>
+                    <button type="button" onClick={() => handleEdit(user)} className="mr-10 flex items-center cursor-pointer px-4 py-2 shadow-md rounded-xl hover:bg-blue-500 transition-colors duration-200 hover:text-white">Editar Perfil<span class="material-symbols-outlined">person_edit</span></button>
                 )}
 
                     {IsModalOpen && (
-                        <div className="fixed inset-0 flex items-center justify-center bg-black/80 z-20">
-                            <div className="bg-[#1f1f1f] text-white p-10 w-[800px] h-[700px] rounded-xl shadow-xl overflow-hidden relative">
+                        <div className="fixed inset-0 flex items-center justify-center bg-black/80">
+                            <div className="bg-[#1f1f1f] text-white p-10 w-[650px] h-[810px] rounded-xl shadow-xl">
 
                                 <div className="w-full flex justify-center">
-                                <div className="text-center text-gray-500 text-2xl font-semibold">Editar perfil</div>
+                                <div className="text-center text-gray-500 text-2xl font-semibold mb-5">Editar perfil</div>
                                 </div>
 
-                                <form className="w-1/2 p-3 flex flex-col justify-center" onSubmit={handleUserSubmit}>
+                                <form className="p-3 flex flex-col justify-center" onSubmit={handleUserSubmit}>
 
-                                <div className="flex flex-col items-center mt-15 w-30 h-30 rounded-full border-2 border-gray-400 object-cover">
+                                <div className="flex h-50 w-50 items-center justify-center overflow-hidden rounded-full bg-[#404040] mx-auto border-2 border-gray-400">
                                     {icon ? (
-                                        typeof icon ==="string" ? (
-                                            <img src={`http://localhost:4000/uploads/${icon}`} alt="userIcon" className="object-contain max-h-full max-w-full"/>
-                                        ) : (
-                                            <img src={URL.createObjectURL(icon)} alt="userPreview" className="object-contain max-h-full max-w-full"/>
-                                        )
+                                        <img 
+                                        src={URL.createObjectURL(icon)}
+                                        alt="Preview" className="max-w-50 max-h-50 object-contain"/>
+                                    ) :  user.icon ? (
+                                        <img src={`http://localhost:4000/uploads/${user.icon}`} alt="iconUser" className="max-w-50 max-h-50 object-contain"/>
                                     ) : (
-                                    <img src="./img/usuarioImage.jpg" alt="userImage" className="object-contain max-h-full max-w-full"/>
+                                        <img src="./img/usuarioImage.jpg" className="max-w-50 max-h-50 object-contain"/>
                                     )}
                                 </div>
 
                                 <div className="p-4">
-                                    <label htmlFor="fileInput" className="flex items-center justify-center w-full py-3 px-4 bg-red text-white rounded-lg cursor-pointer">ENVIAR ARQUIVO</label>
+                                <label 
+                                htmlFor="fileInput" 
+                                className="flex items-center justify-center w-full py-3 bg-[#3a3a3a] text-white rounded-lg cursor-pointer hover:bg-[#4a4a4a] transition">
+                                SELECIONAR IMAGEM<span class="material-symbols-outlined">add_photo_alternate</span></label>
 
                                     <input type="file" id="fileInput" onChange={(e) => setIcon(e.target.files[0])} className="hidden"/>
                                 </div>
 
-                                <hr className="border-orange-500 w-full"/>
+                                <hr className="border-orange-500 w-full mb-4"/>
 
                                 <div>
                                     <label className="block font-semibold mb-1 text-1">NOME</label>
@@ -115,19 +93,21 @@ export default function Header(){
                                 </div>
 
                                 <div>
-                                    <label className="block font-semibold mb-1 text-1">BIO</label>
-                                    <input type="text" value={bio} onChange={(e) => setBio(e.target.value)}
-                                    className="w-full p-2 border rounded"/>
+                                    <label className="block font-semibold mb-1 text-1 mt-4">BIO</label>
+                                    <textarea type="text" value={bio} onChange={(e) => setBio(e.target.value)}
+                                    className="w-full h-30 p-2 border rounded"/>
                                 </div>
 
-                                <button type="button" onClick={() => {limparCampos(), setIsModalOpen(false)}} className="cursor-pointer w-full h-full">Cancelar</button>
+                                <button type="submit" className="cursor-pointer w-full h-full bg-blue-600 p-3 rounded-lg mt-6 mb-5 hover:bg-blue-700 transition">Salvar</button>
+
+                                <button type="button" onClick={() => {limparCampos(), setIsModalOpen(false)}} className="cursor-pointer w-full h-full bg-gray-600 p-3 rounded-lg hover:bg-gray-700 transition">Cancelar</button>
                                 
                                 </form>
                             </div>
                         </div>
                     )}
 
-                    <a href="/" className="hover:text-gray-200 mr-10 flex items-center gap-1">Sair<span class="material-symbols-outlined">exit_to_app</span></a>
+                    <a href="/" className="mr-10 flex items-center cursor-pointer px-4 py-2 shadow-md rounded-xl hover:bg-blue-500 transition-colors duration-200 hover:text-white">Sair<span class="material-symbols-outlined">exit_to_app</span></a>
                 </nav>
             </div>
         </header>

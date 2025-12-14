@@ -24,7 +24,7 @@ export default function Login() {
             });
 
     localStorage.setItem("token", response.data.token);
-    localStorage.setItem("username", response.data.user.nome);
+    localStorage.setItem("username", response.data.user.name);
     
             alert("Login realizado com sucesso!");
             navigate("/Home");
@@ -44,7 +44,7 @@ export default function Login() {
 
         try {
             const response = await axios.post("http://localhost:4000/auth/registrar", {
-                nome: regName,
+                name: regName,
                 email: regEmail,
                 senha: regPassword
             });
