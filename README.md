@@ -15,3 +15,13 @@ O sistema oferece uma interface moderna e responsiva, focada na experiência do 
   <li>Marcação visual por cores</li>
   <li>Edição e atualização dos boards e imagens</li>
 </ul>
+
+![Image](https://github.com/user-attachments/assets/866f52dd-67ce-4427-90e0-f0a1444af16e)
+
+<hr>
+<h3>
+  Objetivo
+</h3>
+O objetivo do projeto Moodboard é criar uma plataforma web que facilite a organização visual de ideias e inspirações criativas, oferecendo uma experiência intuitiva e agradável ao usuário. O projeto busca unir design, usabilidade e funcionalidade, permitindo o gerenciamento de imagens de forma prática, ao mesmo tempo em que demonstra habilidades em desenvolvimento full stack, UI/UX e boas práticas de arquitetura web.
+
+<hr>
