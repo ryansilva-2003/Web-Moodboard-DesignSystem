@@ -25,3 +25,24 @@ O sistema oferece uma interface moderna e responsiva, focada na experiência do 
 O objetivo do projeto Moodboard é criar uma plataforma web que facilite a organização visual de ideias e inspirações criativas, oferecendo uma experiência intuitiva e agradável ao usuário. O projeto busca unir design, usabilidade e funcionalidade, permitindo o gerenciamento de imagens de forma prática, ao mesmo tempo em que demonstra habilidades em desenvolvimento full stack, UI/UX e boas práticas de arquitetura web.
 
 <hr>
+<h3>
+  Tecnologias Usadas:
+</h3>
+<ul>
+  <li>React</li>
+  <li>Node.js</li>
+  <li>Express</li>
+  <li>Prisma</li>
+  <li>Tailwind CSS</li>
+  <li>Multer</li>
+  <li>Vercel</li>
+</ul>
+
+<hr>
+<i>Home</i>
+
+![Image](https://github.com/user-attachments/assets/704ec2bd-5454-4cd7-bc31-c90cb3b3a775)
+<hr>
+<i>Board</i>
+
+![Image](https://github.com/user-attachments/assets/a2dcf00d-b05f-4ff1-a3f6-dc22e1534a87)
