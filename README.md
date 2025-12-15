@@ -4,7 +4,7 @@
 Para informações do projeto.
 <hr>
 <h3>
-  Descrição
+ 📝 Descrição
 </h3>
 O sistema oferece uma interface moderna e responsiva, focada na experiência do usuário, possibilitando a criação, edição e visualização dos conteúdos de forma simples e fluida. As imagens são organizadas de maneira dinâmica, permitindo uma leitura visual clara e agradável.
 <ul>
@@ -20,13 +20,13 @@ O sistema oferece uma interface moderna e responsiva, focada na experiência do 
 
 <hr>
 <h3>
-  Objetivo
+ 🎯 Objetivo
 </h3>
 O objetivo do projeto Moodboard é criar uma plataforma web que facilite a organização visual de ideias e inspirações criativas, oferecendo uma experiência intuitiva e agradável ao usuário. O projeto busca unir design, usabilidade e funcionalidade, permitindo o gerenciamento de imagens de forma prática, ao mesmo tempo em que demonstra habilidades em desenvolvimento full stack, UI/UX e boas práticas de arquitetura web.
 
 <hr>
 <h3>
-  Tecnologias Usadas:
+ 🛠️ Tecnologias Usadas:
 </h3>
 <ul>
   <li>React</li>
@@ -46,3 +46,14 @@ O objetivo do projeto Moodboard é criar uma plataforma web que facilite a organ
 <i>Board</i>
 
 ![Image](https://github.com/user-attachments/assets/a2dcf00d-b05f-4ff1-a3f6-dc22e1534a87)
+
+<hr>
+<i>Criação do Board</i>
+
+![Image](https://github.com/user-attachments/assets/2b7236e2-06d1-4430-8137-e4e239604ae3)
+
+<hr>
+<h3>
+  Autor
+</h3>
+Projeto desenvolvido por Ryan.
